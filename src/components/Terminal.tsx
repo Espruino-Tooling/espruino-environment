@@ -10,7 +10,6 @@ export const Terminal = () => {
                 </div>
 
                 <pre className="entry caret-block" contentEditable="true">
-                    <span>d</span>
                 </pre>
             </div>
         </div>

@@ -1,0 +1,27 @@
+.menubar{
+    width:calc(100% - 20px);
+    height:60px;
+    background:white;
+    border-bottom: 0.5px solid lightgray ;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & .flex{
+        display:flex;
+        align-items: center;
+        justify-content: center;
+        margin-right:20px;
+        gap:10px;
+    }
+
+    & .logo{
+        margin-left: 10px;
+        height:40px;
+        width:40px;
+        background-image: url(https://avatars.githubusercontent.com/u/114813757?s=400&u=172366c85e47b910d0e4e5a2ae1fa4d1f1930e86&v=4);
+        background-size:contain;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+}

@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@espruino-tools/core": "^1.2.5",
+    "@espruino-tools/transpiler": "^0.0.30",
     "@mantine/core": "^5.9.4",
     "@types/node": "^16.18.9",
     "@types/react": "^18.0.26",
@@ -11,6 +13,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1",
+    "react-markdown": "^8.0.5",
     "react-router-dom": "^6.4.5",
     "react-scripts": "5.0.1",
     "react-simple-code-editor": "^0.13.1",

@@ -1,4 +1,4 @@
-import { Tooltip, UnstyledButton } from "@mantine/core";
+import { Modal, Tooltip, UnstyledButton } from "@mantine/core";
 import { RowButton } from "../../components/RowButton";
 import { Terminal } from "../../components/Terminal";
 import "../../styles/dashboard.scss";
@@ -11,7 +11,7 @@ import "../../styles/codeeditor.scss";
 import { transpile } from "@espruino-tools/transpiler";
 import DeviceController from "@espruino-tools/core";
 import { AiFillPlayCircle, AiOutlineCloudUpload, AiOutlineDelete, AiOutlineSave } from "react-icons/ai";
-
+import { VscDesktopDownload } from 'react-icons/vsc'
 const transpiled_code = (code: string) => {
   try {
     return transpile(code);
@@ -26,7 +26,7 @@ export const Dashboard = () => {
   const [transpiledCode, setTranspiledCode] = useState(``);
   const [response, setResponse] = useState(``);
 
-  let device = new DeviceController();
+  let [device] = useState(new DeviceController());
 
   console.log = function (value) {
     let clean_val = value.replaceAll("<UART>", "");
@@ -49,8 +49,66 @@ export const Dashboard = () => {
     read.onloadend = () => {
         setCode(read.result as string);
     }
+  }
 
+  function getFunctionNamesFromString(
+    str: string,
+  ): { name: string; parameters: string[] }[] {
+    let str_arr = str?.split('\n');
 
+    let new_arr = str_arr?.map((x) => {
+      if (x.startsWith('function')) {
+        return x.split('{')[0].replace('function', '').split(' ').join('');
+      } else if (x.startsWith('let') || x.startsWith('const')) {
+        if (x.includes('function(') || x.includes('=>')) {
+          if (x.includes('=>')) {
+            return x
+              .split('=>')[0]
+              .replace('let', '')
+              .replace('const', '')
+              .replace('=', '')
+              .split(' ')
+              .join('');
+          } else {
+            return x
+              .split('{')[0]
+              .replace('let', '')
+              .replace('const', '')
+              .replace('=', '')
+              .replace('function', '')
+              .split(' ')
+              .join('');
+          }
+        }
+      }
+    });
+
+    let filtered_arr = new_arr.filter(Boolean);
+
+    return filtered_arr.map((func) => {
+      return {
+        name: (func as string).split('(')[0],
+        parameters:
+          (func as string).split('(')[1].replace(')', '').split(',')[0] !== ''
+            ? (func as string).split('(')[1].replace(')', '').split(',')
+            : [],
+      };
+    });
+  }  
+
+  function mapStringFunctionToCall(funcArr: { name: string; parameters: string[] }[]) {
+    return funcArr.map((func) => {
+      return {
+        [func.name]:JSON.stringify(func.parameters),
+      };
+    });
+  }
+
+  const getDeviceFunction = async () => {
+    await device.dump().then((dumpStr:any)=>{
+      setModalContent(mapStringFunctionToCall(getFunctionNamesFromString(dumpStr.data)))
+    });
+    setFuncsModalOpen(true)
   }
 
   useEffect(()=>{
@@ -61,7 +119,7 @@ export const Dashboard = () => {
       }
     }, false);
   },[])
-
+  
   useEffect(() => {
     setTranspiledCode(transpiled_code(code));
   }, [code]);
@@ -111,15 +169,37 @@ const saveCodeButton = {
 }
 
 const runCodeButton = {
-    name: 'Run code (from editor)',
-    icon: <AiFillPlayCircle {...default_props}/>,
-    background:'#1F618D',
-    border:'#1B4F72',
+  name: 'Run code (from editor)',
+  icon: <AiFillPlayCircle {...default_props}/>,
+  background:'#1F618D',
+  border:'#1B4F72',
 }
 
+const deviceFuncButton = {
+  name: 'Get Device Functions (from device)',
+  icon: <VscDesktopDownload {...default_props}/>,
+  background:'#1F618D',
+  border:'#1B4F72',
+}
+
+const convertToCsv = (x:any) => {
+  return JSON.parse(x[0]).join(',')
+}
+
+const [funcsModalOpen, setFuncsModalOpen] = useState(false);
+const [modalContent, setModalContent] = useState<any>(null)
   return (
     <>
       <div className="dash-container">
+      <Modal
+        opened={funcsModalOpen}
+        onClose={() => setFuncsModalOpen(false)}
+        title="Device Functions"
+      >
+        {modalContent?.map((func:any) => 
+          <p>{Object.keys(func)[0]}({convertToCsv(Object.values(func))})</p>
+        )}
+      </Modal>
         <SplitPane
           split="vertical"
           sizes={sizes}
@@ -180,6 +260,15 @@ const runCodeButton = {
                     icon={saveCodeButton.icon}
                     name={saveCodeButton.name}
                     call={saveCodeFromEditor}
+                  />
+                </UnstyledButton>
+              </Tooltip>
+              <Tooltip label={deviceFuncButton.name} position="bottom">
+                <UnstyledButton>
+                  <RowButton
+                    icon={deviceFuncButton.icon}
+                    name={deviceFuncButton.name}
+                    call={getDeviceFunction}
                   />
                 </UnstyledButton>
               </Tooltip>

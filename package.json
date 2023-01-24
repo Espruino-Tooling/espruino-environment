@@ -6,6 +6,7 @@
     "@espruino-tools/core": "^1.2.5",
     "@espruino-tools/transpiler": "^0.0.30",
     "@mantine/core": "^5.9.4",
+    "@monaco-editor/react": "^4.4.6",
     "@types/node": "^16.18.9",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",

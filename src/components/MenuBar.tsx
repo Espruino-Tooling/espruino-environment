@@ -7,28 +7,28 @@ import "../styles/menubar.scss";
 import { RowButton } from "./RowButton";
 const default_props = {
   size: 20,
-  color: "white",
+  color: "darkgray",
 };
 
 const btn = {
   name: "Connect to device",
   icon: <MdOutlineBluetoothConnected {...default_props} />,
   background: "#239B56",
-  border: "#186A3B",
+  border: false,
 };
 
 const disconnect = {
   name: "Disconnect from device",
   icon: <MdOutlineBluetoothConnected {...default_props} />,
   background: "rgb(176, 58, 46)",
-  border: "rgb(120, 40, 31)",
+  border: false,
 };
 
 const settings = {
   name: "Settings",
   icon: <AiOutlineSetting {...default_props} />,
   background: "#909497",
-  border: "#626567",
+  border: false,
 };
 
 export const MenuBar = () => {

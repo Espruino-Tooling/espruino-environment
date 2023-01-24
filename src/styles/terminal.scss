@@ -1,27 +1,26 @@
 .terminal{
     background:rgb(60,60,60);
     color:white;
-    height:100%;
+    margin-top:0px;
+    height:calc(100% - 20px);
     width:100%;
     display: flex;
     font-family: Fira Code;
     flex-direction: column;
 
-    & .out{
-        padding-left:10px;
-        
-        & p{
-            height:100%;
-            overflow-y:scroll;
-            width: 100%;
-        }
+    & pre{
+        line-height: 10px;
+        overflow-x: scroll;
+        word-wrap: break-word;
+    }
 
-        padding-right:10px;
+    & .out{
+        overflow-y:scroll;
         display: flex;
         align-items: flex-end;
         position: relative;
         width: 100%;
-        height: calc(100%);
+        height: calc(100% - 20px);
     }
 
     & .in{

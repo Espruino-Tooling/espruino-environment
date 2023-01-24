@@ -1,15 +1,21 @@
 
 .dash-container{
     width:100%;
-    height:80vh;
+    height:calc(100vh - 60px);
 }
 
 .dash-btns{
-    height:60px;
-
+    background:rgba(0,0,0,0.6);
+    padding:2.5px;
+    gap:5px;
+    height:30px;
+    width:100%;
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap:10px;
+    align-items: flex-start;
     justify-content: center;
+    &.editor{
+        align-items: center;
+        justify-content: flex-start;
+        border-left:1px solid gray;
+    }
 }

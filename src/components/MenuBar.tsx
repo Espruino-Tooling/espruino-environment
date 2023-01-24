@@ -1,35 +1,29 @@
 import DeviceController from "@espruino-tools/core";
 import { Tooltip, UnstyledButton } from "@mantine/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineSetting } from "react-icons/ai";
 import { MdOutlineBluetoothConnected } from "react-icons/md";
 import "../styles/menubar.scss";
 import { RowButton } from "./RowButton";
 const default_props = {
   size: 20,
-  color: "white",
+  color: "darkgray",
 };
 
 const btn = {
   name: "Connect to device",
   icon: <MdOutlineBluetoothConnected {...default_props} />,
   background: "#239B56",
-  border: "#186A3B",
+  border: false,
 };
 
 const disconnect = {
   name: "Disconnect from device",
   icon: <MdOutlineBluetoothConnected {...default_props} />,
   background: "rgb(176, 58, 46)",
-  border: "rgb(120, 40, 31)",
+  border: false,
 };
 
-const settings = {
-  name: "Settings",
-  icon: <AiOutlineSetting {...default_props} />,
-  background: "#909497",
-  border: "#626567",
-};
 
 export const MenuBar = () => {
     let device = new DeviceController();
@@ -54,7 +48,7 @@ export const MenuBar = () => {
     <div className="menubar">
       <div className="flex">
         <div className="logo" />
-        <h2>Espruino Tools IDE</h2>
+        <h2 style={{color:'rgb(60,60,60)'}}>Espruino Tools IDE</h2>
       </div>
       <div className="flex">
         {!deviceConnected ? (
@@ -83,19 +77,6 @@ export const MenuBar = () => {
             </UnstyledButton>
           </Tooltip>
         )}
-        <Tooltip label={settings.name} position="bottom">
-          <UnstyledButton>
-            <RowButton
-              color={{
-                background: settings.background,
-                border: settings.border,
-              }}
-              icon={settings.icon}
-              name={settings.name}
-              call={undefined}
-            />
-          </UnstyledButton>
-        </Tooltip>
       </div>
     </div>
   );

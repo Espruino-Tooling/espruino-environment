@@ -1,6 +1,6 @@
 import DeviceController from "@espruino-tools/core";
 import { Tooltip, UnstyledButton } from "@mantine/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineSetting } from "react-icons/ai";
 import { MdOutlineBluetoothConnected } from "react-icons/md";
 import "../styles/menubar.scss";
@@ -54,7 +54,7 @@ export const MenuBar = () => {
     <div className="menubar">
       <div className="flex">
         <div className="logo" />
-        <h2>Espruino Tools IDE</h2>
+        <h2 style={{color:'rgb(60,60,60)'}}>Espruino Tools IDE</h2>
       </div>
       <div className="flex">
         {!deviceConnected ? (

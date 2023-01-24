@@ -11,7 +11,6 @@ import "../../styles/codeeditor.scss";
 import { transpile } from "@espruino-tools/transpiler";
 import DeviceController from "@espruino-tools/core";
 import { AiFillPlayCircle, AiOutlineCloudUpload, AiOutlineDelete, AiOutlineSave } from "react-icons/ai";
-import { HiOutlineArrowLeftCircle } from "react-icons/hi2";
 
 const transpiled_code = (code: string) => {
   try {
@@ -32,10 +31,13 @@ export const Dashboard = () => {
   console.log = function (value) {
     let clean_val = value.replaceAll("<UART>", "");
 
-    if (!clean_val.startsWith("Sending") || !clean_val.startsWith("Sent")) {
-      setResponse(`${response}&nbsp;  
-            ${clean_val}`);
-    }
+    clean_val = clean_val
+      .replace('Sending',"> ")
+      .replace("Received","")
+      .replace('Sent','')
+      setResponse(`${response}
+        ${clean_val}
+      `);
   };
 
   const uploadFile = (e:any) => {

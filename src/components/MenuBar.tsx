@@ -24,12 +24,6 @@ const disconnect = {
   border: false,
 };
 
-const settings = {
-  name: "Settings",
-  icon: <AiOutlineSetting {...default_props} />,
-  background: "#909497",
-  border: false,
-};
 
 export const MenuBar = () => {
     let device = new DeviceController();
@@ -83,19 +77,6 @@ export const MenuBar = () => {
             </UnstyledButton>
           </Tooltip>
         )}
-        <Tooltip label={settings.name} position="bottom">
-          <UnstyledButton>
-            <RowButton
-              color={{
-                background: settings.background,
-                border: settings.border,
-              }}
-              icon={settings.icon}
-              name={settings.name}
-              call={undefined}
-            />
-          </UnstyledButton>
-        </Tooltip>
       </div>
     </div>
   );

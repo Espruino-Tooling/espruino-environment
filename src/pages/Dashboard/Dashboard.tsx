@@ -1,4 +1,4 @@
-import { Modal, Tooltip, UnstyledButton } from "@mantine/core";
+import { Modal, Tabs, Tooltip, UnstyledButton } from "@mantine/core";
 import { RowButton } from "../../components/RowButton";
 import { Terminal } from "../../components/Terminal";
 import "../../styles/dashboard.scss";
@@ -102,6 +102,16 @@ export const Dashboard = () => {
         [func.name]:JSON.stringify(func.parameters),
       };
     });
+  }
+
+  const [deviceCode,setDeviceCode] = useState({data:"no code..."});
+
+  const getDeviceCode = async () => {
+    await device.dump().then((dumpStr:any) => {
+      setDeviceCode(dumpStr)
+    }).catch(()=>{
+      setDeviceCode({data:"no code..."})
+    })
   }
 
   const getDeviceFunction = async () => {
@@ -274,7 +284,15 @@ const [modalContent, setModalContent] = useState<any>(null)
               </Tooltip>
               
           </div>
-            <div className="code-editor" style={{paddingTop:10}}>
+          <div className="code-editor" style={{paddingTop:10}}>
+
+          <Tabs defaultValue={'editor'} sx={{height:"100%"}}>
+            <Tabs.List>
+          <Tabs.Tab value="editor" icon={<></>}>Editor</Tabs.Tab>
+          <Tabs.Tab value="transpiled-code" icon={<></>}>Transpiled Code</Tabs.Tab>
+          <Tabs.Tab onClick={getDeviceCode} value="device" icon={<></>}>Device Code</Tabs.Tab>
+          </Tabs.List>
+          <Tabs.Panel value="editor" h={'100%'}  mah={'calc(100vh - 200px)'} pt="xs">
               <Editor
 
                 className="line-numbers"
@@ -283,8 +301,28 @@ const [modalContent, setModalContent] = useState<any>(null)
                 value={code}
                 onChange={(code:any) => setCode(code)}
               />
-            </div>
+          </Tabs.Panel>
+          <Tabs.Panel value="transpiled-code" h={'100%'} mah={'calc(100vh - 200px)'} pt="xs">
+          <Editor
+            className="line-numbers"
+            defaultLanguage="javascript"
+            value={transpiledCode}
+            options={{readOnly:true,domReadOnly:true}}
+          />
+          </Tabs.Panel>
+          <Tabs.Panel value="device" h={'100%'} mah={'calc(100vh - 200px)'} pt="xs">
+          <Editor
+            className="line-numbers"
+            defaultLanguage="javascript"
+            value={deviceCode.data}
+            options={{readOnly:true,domReadOnly:true}}
+          />
+          </Tabs.Panel>
+          </Tabs>
+          </div>
+
           </Pane>
+          
         </SplitPane>
       </div>
     </>
